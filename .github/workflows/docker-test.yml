@@ -23,5 +23,11 @@ jobs:
       - name: Run Docker container
         run: docker run -d -p 3000:3000 techbot_image
 
+      - name: Check container logs
+        run: docker logs $(docker ps -q)
+
+      - name: Test if port 3000 is open
+        run: netstat -tuln
+
       - name: Test services
         run: curl http://localhost:3000
