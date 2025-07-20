@@ -5,6 +5,7 @@ FROM node:16 AS node_builder
 
 # Load environment variables from .env file
 COPY .env .env
+RUN if [ -f .env ]; then echo ".env file found, loading environment variables"; else echo ".env file not found, skipping"; fi
 
 # Install Go dependencies for api_gateway
 WORKDIR /app/api_gateway
