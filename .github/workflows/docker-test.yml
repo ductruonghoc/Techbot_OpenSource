@@ -21,10 +21,11 @@ jobs:
         run: docker build -t techbot_image .
 
       - name: Run Docker container
-        run: docker run -d -p 3000:3000 techbot_image
+        id: run_container
+        run: echo $(docker run -d -p 3000:3000 techbot_image) > container_id.txt
 
       - name: Check container logs
-        run: docker logs $(docker ps -q)
+        run: docker logs $(cat container_id.txt)
 
       - name: Test if port 3000 is open
         run: netstat -tuln
