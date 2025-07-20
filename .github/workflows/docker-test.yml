@@ -92,7 +92,7 @@ jobs:
 
           echo "Testing API Gateway (http://localhost:8081)..."          echo "Testing API Gateway (http://localhost:8081)..."
           curl -v http://localhost:8081
-          echo "---------------------------"----"
+          echo "---------------------------"
 
       - name: Show all Docker Compose logs (for debugging if tests fail)      - name: Show all Docker Compose logs (for debugging if tests fail)
         if: always()
