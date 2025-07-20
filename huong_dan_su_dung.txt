@@ -53,4 +53,4 @@ HƯỚNG DẪN SỬ DỤNG / DEPLOY VỚI DOCKER COMPOSE
      docker-compose down --rmi all
      ```
 
-Nếu gặp lỗi trong quá trình sử dụng, hãy kiểm tra lại các bước hoặc liên hệ với nhóm phát triển để được hỗ trợ.
+Nếu gặp lỗi trong quá trình sử dụng, hãy kiểm tra lại các bước hoặc liên hệ với nhóm phát triển để được hỗ trợ, xin cám ơn.
