@@ -37,11 +37,5 @@ COPY --from=python_builder /app/ai_service .
 WORKDIR /app/client_interfere
 COPY --from=node_builder /app/client_interfere .
 
-# Build the frontend
-RUN npm run build
-
-# Expose the port for the frontend
-EXPOSE 8080
-
 # Command to run the frontend
 CMD ["npm", "run", "dev"]
