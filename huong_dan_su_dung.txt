@@ -1,7 +1,7 @@
-HƯỚNG DẪN SỬ DỤNG / DEPLOY VỚI DOCKER
+HƯỚNG DẪN SỬ DỤNG / DEPLOY VỚI DOCKER COMPOSE
 
 1. **Yêu cầu hệ thống**
-   - Đã cài đặt Docker trên máy. Nếu chưa, tham khảo hướng dẫn cài đặt tại file `huong_dan_cai_dat.txt`.
+   - Đã cài đặt Docker và Docker Compose trên máy. Nếu chưa, tham khảo hướng dẫn cài đặt tại file `huong_dan_cai_dat.txt`.
 
 2. **Clone mã nguồn**
    - Clone dự án từ GitHub:
@@ -10,46 +10,39 @@ HƯỚNG DẪN SỬ DỤNG / DEPLOY VỚI DOCKER
      cd techbot
      ```
 
-3. **Xây dựng Docker image**
-   - Sử dụng lệnh sau để xây dựng Docker image:
+3. **Chạy các dịch vụ bằng Docker Compose**
+   - Sử dụng lệnh sau để xây dựng và chạy tất cả các container:
      ```bash
-     docker build -t techbot_image .
+     docker-compose up --build
      ```
 
-4. **Chạy container**
-   - Sau khi xây dựng thành công, chạy container bằng lệnh:
+4. **Truy cập các dịch vụ**
+   - **Frontend**: Mở trình duyệt và truy cập vào địa chỉ:
+     ```
+     http://localhost:8080
+     ```
+   - **API Gateway**: Truy cập API Gateway tại:
+     ```
+     http://localhost:8081
+     ```
+   - **AI Service**: AI Service hoạt động trên cổng 8082 (gRPC).
+
+5. **Kiểm tra logs**
+   - Nếu cần kiểm tra logs của các container, sử dụng lệnh:
      ```bash
-     docker run -p 3000:3000 techbot_image
+     docker-compose logs -f
      ```
 
-5. **Truy cập ứng dụng**
-   - Mở trình duyệt và truy cập vào địa chỉ:
-     ```
-     http://localhost:3000
-     ```
-
-6. **Kiểm tra logs**
-   - Nếu cần kiểm tra logs của container, sử dụng lệnh:
+6. **Dừng các container**
+   - Để dừng tất cả các container đang chạy, sử dụng lệnh:
      ```bash
-     docker logs <container_id>
+     docker-compose down
      ```
 
-7. **Dừng container**
-   - Để dừng container đang chạy, sử dụng lệnh:
+7. **Xóa container và image (nếu cần)**
+   - Nếu cần xóa toàn bộ container và image, sử dụng lệnh:
      ```bash
-     docker stop <container_id>
+     docker-compose down --rmi all
      ```
 
-8. **Xóa container**
-   - Nếu cần xóa container, sử dụng lệnh:
-     ```bash
-     docker rm <container_id>
-     ```
-
-9. **Xóa Docker image**
-   - Nếu cần xóa Docker image, sử dụng lệnh:
-     ```bash
-     docker rmi techbot_image
-     ```
-
-Nếu gặp lỗi trong quá trình sử dụng, hãy kiểm tra lại các bước hoặc liên hệ với nhóm phát triển
+Nếu gặp lỗi trong quá trình sử dụng, hãy kiểm tra lại các bước hoặc liên hệ với nhóm phát triển để được hỗ trợ.

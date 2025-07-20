@@ -1,4 +1,3 @@
-# filepath: .github/workflows/docker-test.yml
 name: Dockerfile Test
 
 on:
@@ -17,18 +16,35 @@ jobs:
       - name: Set up Docker
         uses: docker/setup-buildx-action@v2
 
-      - name: Build Docker image
-        run: docker build -t techbot_image .
+      - name: Build Docker images
+        run: |
+          docker build -t techbot_api_gateway ./api_gateway
+          docker build -t techbot_ai_service ./ai_service
+          docker build -t techbot_frontend .
 
-      - name: Run Docker container
-        id: run_container
-        run: echo $(docker run -d -p 3000:3000 techbot_image) > container_id.txt
+      - name: Run Docker containers
+        run: |
+          echo $(docker run -d --name api_gateway -p 8081:8080 techbot_api_gateway) > api_gateway_id.txt
+          echo $(docker run -d --name ai_service -p 8082:50051 techbot_ai_service) > ai_service_id.txt
+          echo $(docker run -d --name frontend -p 8080:3000 techbot_frontend) > frontend_id.txt
 
-      - name: Check container logs
-        run: docker logs $(cat container_id.txt)
+      - name: Check logs for all containers
+        run: |
+          docker logs $(cat api_gateway_id.txt)
+          docker logs $(cat ai_service_id.txt)
+          docker logs $(cat frontend_id.txt)
 
-      - name: Test if port 3000 is open
-        run: netstat -tuln
+      - name: Test if ports are open
+        run: |
+          netstat -tuln
 
-      - name: Test services
-        run: curl http://localhost:3000
+      - name: Test frontend service
+        run: curl http://localhost:8080
+
+      - name: Test API Gateway service
+        run: curl http://localhost:8081
+
+      - name: Test AI Service (gRPC)
+        run: |
+          echo "Testing AI Service on port 8082"
+          # Add gRPC client test commands here if applicable
