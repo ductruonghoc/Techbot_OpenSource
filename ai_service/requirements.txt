@@ -1,0 +1,12 @@
+pydantic
+google-cloud-storage
+transformers
+psycopg2-binary
+grpcio
+grpcio-tools
+google-generativeai
+google-genai
+ultralytics
+PyMuPDF
+Pillow
+torch==2.7.0 # Hoặc phiên bản cụ thể 

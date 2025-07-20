@@ -1,0 +1,75 @@
+
+  const handleToggleEdit = (id: number) => {
+    if (editingChunkId === id) {
+      const chunk = pageData
+        .find((data) => data.pageNumber === currentPage)
+        ?.textChunks.find((chunk) => chunk.id === id)
+      if (chunk) toast.success(`Text chunk ${id} saved`)
+      setEditingChunkId(null)
+    } else {
+      setEditingChunkId(id)
+    }
+  }
+
+  const handleDeleteChunk = (id: number) => {
+    setPageData((prev) =>
+      prev.map((data) =>
+        data.pageNumber === currentPage
+          ? { ...data, textChunks: data.textChunks.filter((chunk) => chunk.id !== id) }
+          : data,
+      ),
+    )
+    toast.success("Text chunk deleted")
+  }
+
+  const handleChunkChange = (id: number, value: string) => {
+    setPageData((prev) =>
+      prev.map((data) =>
+        data.pageNumber === currentPage
+          ? {
+            ...data,
+            textChunks: data.textChunks.map((chunk) => (chunk.id === id ? { ...chunk, value } : chunk)),
+          }
+          : data,
+      ),
+    )
+  }
+
+  const handleAddChunk = () => {
+    const currentPageData = pageData.find((data) => data.pageNumber === currentPage)
+    if (!currentPageData) return
+    const newId = Math.max(...currentPageData.textChunks.map((c) => c.id), 0) + 1
+    setPageData((prev) =>
+      prev.map((data) =>
+        data.pageNumber === currentPage
+          ? { ...data, textChunks: [...data.textChunks, { id: newId, value: "" }] }
+          : data,
+      ),
+    )
+    setEditingChunkId(newId)
+  }
+
+                      <h3 className="text-lg font-semibold text-gray-800">Text Chunks - Page {currentPage}</h3>
+                    <Button
+                      onClick={handleAddChunk}
+                      size="sm"
+                      className="bg-indigo-600 hover:bg-indigo-700"
+                      disabled={currentPageData?.textChunks.some(
+                        (chunk) => editingChunkId === chunk.id && chunk.value === "",
+                      )}
+                    >
+                      <Plus className="w-4 h-4 mr-1" />
+                      Add
+                    </Button>
+
+                          className={`w-full h-32 p-3 pt-10 border rounded-lg text-sm resize-none transition-all duration-200 ${editingChunkId === chunk.id
+                              ? "border-indigo-600 ring-2 ring-indigo-600/20 bg-white"
+                              : "border-gray-200 bg-gray-50"
+                            }`}
+                          value={chunk.value}
+                          onChange={(e) => handleChunkChange(chunk.id, e.target.value)}
+                          readOnly={editingChunkId !== chunk.id}
+                          placeholder={`Text chunk ${idx + 1}`}
+                        />
+                      </div>
+                    ))}

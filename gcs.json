@@ -1,0 +1,13 @@
+
+{
+"type": "service_account",
+"project_id": "",
+"private_key_id": "",
+"private_key": "-----BEGIN PRIVATE KEY-----\nYOUR_PRIVATE_KEY_HERE\n-----END PRIVATE KEY-----\n",
+"client_email": "compute@developer.gserviceaccount.com",
+"client_id": "  YOUR_CLIENT_ID_HERE",
+"auth_uri": "https://accounts.google.com/o/oauth2/a",
+"token_uri": "https://accounts.google.com/o/oauth2/",
+"auth_provider_x509_cert_url": "https://www.googlea",
+"client_x509_cert_url": "https://www.googleapis.com"
+}

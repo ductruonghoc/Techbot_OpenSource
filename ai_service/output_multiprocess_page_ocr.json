@@ -1,0 +1,18 @@
+{
+  "pdf_number_of_pages": 1,
+  "pages": [
+    {
+      "page": {
+        "paragraph": "1.\n\n2.\n\n8.\n\nHoa don\nNgay: 27/5/2025\nSTT Mat hang Gia ban\nBAO NHIM 96k\nCHA GIO 77k\nDAUHUPHO = 94k\nMAI\nHA CAO 80k\nKHOAI TAY 50k\nCONG BU\u2019\nNAM BUI GA 50k\nNAM KIM CHAM. 215k\nXiU MAI 77k\nXUC XICH 63k\n\n9.\n\nTong cong:\n\nThank you\nCHU BEO\nQuan 12\n\nS6 luong\n2 KG\n\n2 KG\n\n2 KG\n\n2 KG\n\n2KG\n\n1 KG\n1 THUNG\n2 KG\n\n2 KG\n\nThanh ti\u00e9n\n192k\n154k\n\n188k\n\n160k\n\n100k\n\n50k\n215k\n154k\n\n126k\n1,339,000",
+        "page_number": 1,
+        "imgs": [
+          {
+            "order": 1,
+            "retrieved_path": "media/images\\embedded_image_page1_order1.jpeg",
+            "gcs_bucket_name": "embedded_1media%2Fimages%5Cembedded_image_page1_order1.jpeg2025-05-29T15%3A26%3A32.794139"
+          }
+        ]
+      }
+    }
+  ]
+}

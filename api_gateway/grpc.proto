@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+option go_package = "github.com/ductruonghoc/DATN_08_2024_Back-end/pb";
+
+service ExtractPdfService {
+  rpc Extract (ExtractPdfRequest) returns (ExtractPdfResponse);
+}
+
+message ExtractPdfRequest {
+  string gcs_pdf_bucket_name = 1;
+}
+
+message ExtractPdfResponse {
+  string result_json = 1;
+}
+
+service MbertChunkingService {
+  rpc ChunkAndEmbed (MbertChunkingRequest) returns (MbertChunkingResponse);
+}
+
+message MbertChunkingRequest {
+  string text = 1;
+}
+
+message MbertChunkingResponse {
+  string result_json = 1;
+}
+
+service RagService {
+  rpc Query (RagRequest) returns (RagResponse);
+}
+
+message RagRequest {
+  string query = 1;
+}
+
+message RagResponse {
+  string response = 1;
+  repeated int32 images_ids = 2;
+}
+
+service RagServiceWithDeviceID {
+  rpc Query (RagWithDeviceIDRequest) returns (RagResponse);
+}
+
+message RagWithDeviceIDRequest {
+  string query = 1;
+  int32 device_id = 2;
+}
+
+service SummarizeQueryService {
+  rpc Summarize (SummarizeRequest) returns (SummarizeResponse);
+}
+
+message SummarizeRequest {
+  string query = 1;
+}
+
+message SummarizeResponse {
+  string summary = 1;
+}
