@@ -17,17 +17,18 @@ jobs:
       - name: Set up Docker Buildx (Optional but good practice)
         uses: docker/setup-buildx-action@v2
 
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+
       - name: Create .env file for services
-        # Create a dummy .env file if your services expect one
-        # or load actual secrets from GitHub Secrets if needed
         run: |
           echo "SOME_ENV_VAR=test_value" > .env
-          echo "API_GATEWAY_URL=http://localhost:8081" >> .env # Example env var
-          echo "AI_SERVICE_GRPC_URL=localhost:8082" >> .env # Example env var
+          echo "API_GATEWAY_URL=http://localhost:8081" >> .env
+          echo "AI_SERVICE_GRPC_URL=localhost:8082" >> .env
 
       - name: Build and run services with Docker Compose
-        # -d for detached mode (run in background)
-        # --build to ensure images are built before starting
         run: docker-compose up -d --build
 
       - name: Check Docker Compose services status
@@ -44,7 +45,7 @@ jobs:
           '
           if [ $? -eq 124 ]; then
             echo "Frontend service did not become ready within 120 seconds."
-            docker-compose logs frontend # Log specific service
+            docker-compose logs frontend
             exit 1
           fi
           echo "Frontend service is ready!"
@@ -68,7 +69,6 @@ jobs:
       - name: Wait for AI Service (gRPC - port 8082)
         run: |
           echo "Waiting for AI Service on port 8082..."
-          # Using netcat to check if the port is open
           timeout 120 bash -c '
             while ! nc -z localhost 8082; do
               echo "AI Service port 8082 not open yet. Retrying in 5 seconds..."
@@ -81,20 +81,19 @@ jobs:
             exit 1
           fi
           echo "AI Service port 8082 is open!"
-          # For full gRPC test, you would need grpcurl or a client script here
           echo "Note: Full gRPC service functionality needs a dedicated gRPC client test."
 
       - name: Run HTTP Tests (curl)
         run: |
           echo "--- Running HTTP Tests ---"
           echo "Testing Frontend (http://localhost:8080)..."
-          curl -v http://localhost:8080 # -v for verbose output
+          curl -v http://localhost:8080
           echo "---------------------------"
 
-          echo "Testing API Gateway (http://localhost:8081)..."
+          echo "Testing API Gateway (http://localhost:8081)..."          echo "Testing API Gateway (http://localhost:8081)..."
           curl -v http://localhost:8081
-          echo "---------------------------"
+          echo "---------------------------"----"
 
-      - name: Show all Docker Compose logs (for debugging if tests fail)
-        if: always() # This step will always run
-        run: docker-compose logs --no-color # --no-color for cleaner logs in GitHub Actions
+      - name: Show all Docker Compose logs (for debugging if tests fail)      - name: Show all Docker Compose logs (for debugging if tests fail)
+        if: always()
+        run: docker-compose logs --no-color
