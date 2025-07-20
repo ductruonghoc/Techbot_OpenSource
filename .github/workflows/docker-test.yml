@@ -90,10 +90,10 @@ jobs:
           curl -v http://localhost:8080
           echo "---------------------------"
 
-          echo "Testing API Gateway (http://localhost:8081)..."          echo "Testing API Gateway (http://localhost:8081)..."
+          echo "Testing API Gateway (http://localhost:8081)..."
           curl -v http://localhost:8081
           echo "---------------------------"
 
-      - name: Show all Docker Compose logs (for debugging if tests fail)      - name: Show all Docker Compose logs (for debugging if tests fail)
+      - name: Show all Docker Compose logs (for debugging if tests fail)
         if: always()
         run: docker-compose logs --no-color
