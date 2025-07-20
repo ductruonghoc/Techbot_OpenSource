@@ -1,9 +1,9 @@
 import os
 # Test only
-# from dotenv import load_dotenv
+from dotenv import load_dotenv
 
 # Load environment variables from .env file
-# load_dotenv()
+load_dotenv()
 
 # Configuration for Google Cloud Storage (GCS)
 gcs_pdf_bucket_name = os.getenv("GCS_PDF_BUCKET_NAME")

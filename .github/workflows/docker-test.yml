@@ -33,7 +33,30 @@ jobs:
 
       - name: Check Docker Compose services status
         run: docker-compose ps
-        
+
+      - name: Wait for frontend service (port 8080)
+        run: |
+          echo "Waiting for frontend service on http://localhost:8080..."
+          timeout 120 bash -c '
+            while ! curl -s http://localhost:8080 > /dev/null; do
+              echo "Frontend not ready yet. Retrying in 5 seconds..."
+              sleep 5
+            done
+          '
+          if [ $? -eq 124 ]; then
+            echo "Frontend service did not become ready within 120 seconds."
+            docker-compose logs frontend
+            exit 1
+          fi
+          echo "Frontend service is ready!"
+
+      - name: Run HTTP Tests (curl)
+        run: |
+          echo "--- Running HTTP Tests ---"
+          echo "Testing Frontend (http://localhost:8080)..."
+          curl -v http://localhost:8080
+          echo "---------------------------"
+
       - name: Show all Docker Compose logs (for debugging if tests fail)
         if: always()
         run: docker-compose logs --no-color
