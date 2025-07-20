@@ -35,4 +35,22 @@ HƯỚNG DẪN CÀI ĐẶT
    - Kiểm tra phiên bản Git:
      git --version
 
+7. Cài đặt PostgreSQL
+   - Tải và cài đặt PostgreSQL từ: https://www.postgresql.org/download/
+   - Trong quá trình cài đặt, ghi nhớ thông tin đăng nhập (username và password) để sử dụng sau.
+   - Kiểm tra PostgreSQL đã được cài đặt:
+     ```bash
+     psql --version
+     ```
+   - Đảm bảo PostgreSQL đang chạy trên hệ thống.
+
+8. Tạo Google Cloud Storage
+   - Truy cập Google Cloud Console: https://console.cloud.google.com/
+   - Tạo một bucket Google Cloud Storage để lưu trữ dữ liệu.
+   - Ghi lại tên bucket và thông tin xác thực (service account key) để cấu hình trong file [.env](http://_vscodecontentref_/1).
+
+9. Cấu hình SMTP Service
+   - Đăng ký và cấu hình một dịch vụ SMTP (ví dụ: Gmail, SendGrid).
+   - Ghi lại thông tin SMTP (host, port, username, password) để cấu hình trong file [.env](http://_vscodecontentref_/2).
+
 Nếu gặp lỗi, hãy kiểm tra lại các bước hoặc liên hệ với nhóm phát triển để được hỗ trợ, xin cám ơn.

@@ -1,7 +1,7 @@
 HƯỚNG DẪN SỬ DỤNG / DEPLOY VỚI DOCKER COMPOSE
 
 1. **Yêu cầu hệ thống**
-   - Đã cài đặt Docker và Docker Compose trên máy. Nếu chưa, tham khảo hướng dẫn cài đặt tại file `huong_dan_cai_dat.txt`.
+   - Đã cài đặt Docker, Docker Compose, và PostgreSQL trên máy. Nếu chưa, tham khảo hướng dẫn cài đặt tại file `huong_dan_cai_dat.txt`.
 
 2. **Tạo file .env**
    - Trước khi chạy dự án, hãy tạo file `.env` trong thư mục gốc dự án dựa trên file mẫu `.env.sample`.
@@ -9,7 +9,7 @@ HƯỚNG DẪN SỬ DỤNG / DEPLOY VỚI DOCKER COMPOSE
      ```bash
      cp .env.sample .env
      ```
-   - Sau đó, chỉnh sửa file `.env` và điền các thông tin cần thiết (như mật khẩu, khóa API, thông tin cơ sở dữ liệu, v.v.).
+   - Sau đó, chỉnh sửa file [.env] và điền các thông tin cần thiết (như mật khẩu, khóa API, thông tin cơ sở dữ liệu, thông tin Google Cloud Storage, SMTP, v.v.).
 
 3. **Clone mã nguồn**
    - Clone dự án từ GitHub:
@@ -18,13 +18,24 @@ HƯỚNG DẪN SỬ DỤNG / DEPLOY VỚI DOCKER COMPOSE
      cd techbot
      ```
 
-4. **Chạy các dịch vụ bằng Docker Compose**
+4. **Cài đặt và chạy [schema.sql]**
+   - Đảm bảo PostgreSQL đã được cài đặt và chạy.
+   - Tạo một cơ sở dữ liệu mới trong PostgreSQL:
+     ```sql
+     CREATE DATABASE techbot;
+     ```
+   - Chạy file [schema.sql] để tạo các bảng và cấu trúc cơ sở dữ liệu:
+     ```bash
+     psql -U <postgres_user> -d techbot -f schema.sql
+     ```
+
+5. **Chạy các dịch vụ bằng Docker Compose**
    - Sử dụng lệnh sau để xây dựng và chạy tất cả các container:
      ```bash
      docker-compose up --build
      ```
 
-5. **Truy cập các dịch vụ**
+6. **Truy cập các dịch vụ**
    - **Frontend**: Mở trình duyệt và truy cập vào địa chỉ:
      ```
      http://localhost:8080
@@ -35,19 +46,19 @@ HƯỚNG DẪN SỬ DỤNG / DEPLOY VỚI DOCKER COMPOSE
      ```
    - **AI Service**: AI Service hoạt động trên cổng 8082 (gRPC).
 
-6. **Kiểm tra logs**
+7. **Kiểm tra logs**
    - Nếu cần kiểm tra logs của các container, sử dụng lệnh:
      ```bash
      docker-compose logs -f
      ```
 
-7. **Dừng các container**
+8. **Dừng các container**
    - Để dừng tất cả các container đang chạy, sử dụng lệnh:
      ```bash
      docker-compose down
      ```
 
-8. **Xóa container và image (nếu cần)**
+9. **Xóa container và image (nếu cần)**
    - Nếu cần xóa toàn bộ container và image, sử dụng lệnh:
      ```bash
      docker-compose down --rmi all
