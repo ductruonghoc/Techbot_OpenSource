@@ -1,0 +1,43 @@
+HƯỚNG DẪN CÀI ĐẶT
+
+1. Cài đặt Docker
+   - Tải và cài đặt Docker Desktop từ: https://www.docker.com/products/docker-desktop
+   - Kiểm tra Docker đã hoạt động:
+     docker --version
+
+2. Cài đặt Node.js
+   - Tải và cài đặt Node.js từ: https://nodejs.org/
+   - Kiểm tra phiên bản Node.js và npm:
+     node --version
+     npm --version
+
+3. Cài đặt Python
+   - Tải và cài đặt Python từ: https://www.python.org/
+   - Đảm bảo chọn tùy chọn "Add Python to PATH" khi cài đặt.
+   - Kiểm tra phiên bản Python và pip:
+     python --version
+     pip --version
+
+4. Cài đặt Go
+   - Tải và cài đặt Go từ: https://go.dev/dl/
+   - Kiểm tra phiên bản Go:
+     go version
+
+5. Cài đặt Git
+   - Tải và cài đặt Git từ: https://git-scm.com/
+   - Kiểm tra phiên bản Git:
+     git --version
+
+6. Clone mã nguồn
+   - Clone dự án từ GitHub:
+     git clone https://github.com/your-repo/techbot.git
+     cd techbot
+
+7. Xây dựng và chạy dự án
+   - Bước 1: Xây dựng Docker image:
+     docker build -t techbot_image .
+   - Bước 2: Chạy container:
+     docker run -p 8080:8080 techbot_image
+   - Bước 3: Truy cập ứng dụng tại: http://localhost:8080
+
+Nếu gặp lỗi, hãy kiểm tra lại các bước hoặc liên hệ với nhóm phát triển để được

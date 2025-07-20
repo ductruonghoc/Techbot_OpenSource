@@ -37,5 +37,7 @@ COPY --from=python_builder /app/ai_service .
 WORKDIR /app/client_interfere
 COPY --from=node_builder /app/client_interfere .
 
+EXPOSE 3000
+
 # Command to run the frontend
 CMD ["npm", "run", "dev"]
