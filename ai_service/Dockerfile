@@ -46,7 +46,7 @@ COPY app/ app/
 # Expose the port your gRPC server listens on (Cloud Run will set this via PORT env var)
 # Cloud Run injects the PORT environment variable. Your application should listen on it.
 # For gRPC, it's common to listen on 0.0.0.0:PORT.
-EXPOSE 8080
+EXPOSE 50051
 
 # Command to run your gRPC server
 # Ensure your server.py is configured to listen on the PORT environment variable

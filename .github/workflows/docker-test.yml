@@ -21,7 +21,7 @@ jobs:
         run: docker build -t techbot_image .
 
       - name: Run Docker container
-        run: docker run -d -p 8080:8080 techbot_image
+        run: docker run -d -p 3000:3000 techbot_image
 
       - name: Test services
         run: curl http://localhost:3000
