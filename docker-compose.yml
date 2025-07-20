@@ -1,3 +1,4 @@
+# docker-compose.yml (Không thay đổi nhiều, giữ nguyên)
 version: "3.8"
 
 services:
@@ -7,8 +8,16 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8081:8080" # Map external port 8081 to internal port 8080
+    env_file:
+      - .env
     networks:
       - techbot_network
+    # Thêm healthcheck cơ bản nếu API Gateway có endpoint sức khỏe
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"] # Thay /health bằng endpoint thực tế
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   ai_service:
     build:
@@ -16,8 +25,17 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8082:50051" # Map external port 8082 to internal port 50051
+    env_file:
+      - .env
     networks:
       - techbot_network
+    # Healthcheck cho gRPC khó hơn với curl, thường cần grpcurl hoặc script.
+    # Để đơn giản, có thể bỏ qua hoặc thêm CMD_SHELL kiểm tra cổng
+    healthcheck:
+      test: ["CMD-SHELL", "lsof -i :50051 || exit 1"] # Kiểm tra cổng nội bộ
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   frontend:
     build:
@@ -25,8 +43,15 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:3000" # Map external port 8080 to internal port 3000
+    env_file:
+      - .env
     networks:
       - techbot_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"] # Kiểm tra cổng nội bộ của frontend
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 networks:
   techbot_network:
