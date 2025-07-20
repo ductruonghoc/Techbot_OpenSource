@@ -6,7 +6,7 @@ HƯỚNG DẪN SỬ DỤNG / DEPLOY VỚI DOCKER
 2. **Clone mã nguồn**
    - Clone dự án từ GitHub:
      ```bash
-     git clone https://github.com/your-repo/techbot.git
+     git clone https://github.com/ductruonghoc/Techbot_OpenSource.git
      cd techbot
      ```
 
@@ -25,7 +25,7 @@ HƯỚNG DẪN SỬ DỤNG / DEPLOY VỚI DOCKER
 5. **Truy cập ứng dụng**
    - Mở trình duyệt và truy cập vào địa chỉ:
      ```
-     http://localhost:
+     http://localhost:3000
      ```
 
 6. **Kiểm tra logs**

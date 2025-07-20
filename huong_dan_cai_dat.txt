@@ -37,7 +37,7 @@ HƯỚNG DẪN CÀI ĐẶT
    - Bước 1: Xây dựng Docker image:
      docker build -t techbot_image .
    - Bước 2: Chạy container:
-     docker run -p 8080:8080 techbot_image
-   - Bước 3: Truy cập ứng dụng tại: http://localhost:8080
+     docker run -p 3000:3000 techbot_image
+   - Bước 3: Truy cập ứng dụng tại: http://localhost:3000
 
 Nếu gặp lỗi, hãy kiểm tra lại các bước hoặc liên hệ với nhóm phát triển để được
