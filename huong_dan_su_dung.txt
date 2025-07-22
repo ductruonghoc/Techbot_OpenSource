@@ -10,6 +10,7 @@ HƯỚNG DẪN SỬ DỤNG / DEPLOY VỚI DOCKER COMPOSE
      cp .env.sample .env
      ```
    - Sau đó, chỉnh sửa file [.env] và điền các thông tin cần thiết (như mật khẩu, khóa API, thông tin cơ sở dữ liệu, thông tin Google Cloud Storage, SMTP, v.v.).
+   - **Lưu ý:** Bạn cần tạo file `gcs.json` (Google Cloud credential) và đặt vào thư mục gốc dự án. File này chứa thông tin xác thực để truy cập Google Cloud Storage. Nếu chưa có, hãy truy cập Google Cloud Console để tạo và tải về file credential.
 
 3. **Clone mã nguồn**
    - Clone dự án từ GitHub:

@@ -46,6 +46,16 @@ message RagWithDeviceIDRequest {
   int32 device_id = 2;
 }
 
+service RagServiceWithConversationHistory {
+  rpc Query (RagWithConversationHistoryRequest) returns (RagResponse);
+}
+
+message RagWithConversationHistoryRequest {
+  string query = 1;
+  string conversation_id = 2;
+  int32 device_id = 3;
+}
+
 service SummarizeQueryService {
   rpc Summarize (SummarizeRequest) returns (SummarizeResponse);
 }
@@ -57,3 +67,4 @@ message SummarizeRequest {
 message SummarizeResponse {
   string summary = 1;
 }
+

@@ -74,7 +74,6 @@ export default function OTPVerificationPage() {
       })
 
       const data = await response.json()
-      console.log("API data:", data)
 
       if (!response.ok || !data.success) {
         setError(data.message || "OTP verification failed.")
@@ -82,7 +81,6 @@ export default function OTPVerificationPage() {
         return
       }
 
-      console.log("OTP valid, navigating...")
       sessionStorage.setItem("otpCode", otpString)
       sessionStorage.setItem("resetEmail", email)
       router.push("/client/forgot-password/reset-password")
@@ -115,7 +113,7 @@ export default function OTPVerificationPage() {
       <header className="flex items-center justify-between p-4 md:p-6">
         <Link href="/" className="flex items-center gap-2">
         </Link>
-        <Link href="/log-in" className="text-[#4045ef] hover:text-[#2d336b] transition-colors">
+        <Link href="client/log-in" className="text-[#4045ef] hover:text-[#2d336b] transition-colors">
           Log in
           <div className="text-[#2e3139] text-xl font-semibold">Techbot</div>
         </Link>

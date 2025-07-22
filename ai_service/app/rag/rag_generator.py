@@ -140,19 +140,6 @@ def generate_response_optimized(query: str, retrieved_chunks: List[Dict]) -> str
         return "Sorry, something went wrong while processing your request."
 
 
-def generate_response_with_fallback(query: str, retrieved_chunks: List[Dict]) -> str:
-    """
-    Main function with fallback to original approach if optimized version fails.
-    """
-    try:
-        # Try optimized single-call approach first
-        return generate_response_optimized(query, retrieved_chunks)
-    except Exception as e:
-        logger.warning(f"Optimized approach failed, falling back to original: {e}")
-        # Fallback to simpler approach
-        return generate_response_simple_fallback(query, retrieved_chunks)
-
-
 def generate_response_simple_fallback(query: str, retrieved_chunks: List[Dict]) -> str:
     """
     Simplified fallback approach with minimal API calls.
@@ -182,13 +169,15 @@ def generate_response_simple_fallback(query: str, retrieved_chunks: List[Dict]) 
 # Main entry point - use this instead of the original generate_response
 def generate_response(query: str, retrieved_chunks: List[Dict]) -> str:
     """
-    Main pipeline with optimizations:
-    - Single API call instead of 3
-    - Efficient context preparation
-    - Language detection with caching
-    - Proper error handling and fallbacks
+    Main function with fallback to original approach if optimized version fails.
     """
-    return generate_response_with_fallback(query, retrieved_chunks)
+    try:
+        # Try optimized single-call approach first
+        return generate_response_optimized(query, retrieved_chunks)
+    except Exception as e:
+        logger.warning(f"Optimized approach failed, falling back to original: {e}")
+        # Fallback to simpler approach
+        return generate_response_simple_fallback(query, retrieved_chunks)
 
 
 def generate_summary(query: str) -> str:

@@ -40,6 +40,16 @@ export default function ConversationPage() {
   const [categorySearch, setCategorySearch] = useState("")
   const [brandSearch, setBrandSearch] = useState("")
 
+
+    // Check if any of the filters are not blank
+  useEffect(() => {
+    const hasFilters = (searchQuery && searchQuery !== "") ||
+      (selectedBrand && selectedBrand !== "*") ||
+      (selectedCategory && selectedCategory !== "*")
+    if (hasFilters) {
+      setCurrentPage(1) // Reset to page 1 if any filter changes
+    }
+  }, [searchQuery, selectedBrand, selectedCategory, setCurrentPage])
   // Fetch devices from API
   useEffect(() => {
     const fetchDevices = async () => {
@@ -78,6 +88,8 @@ export default function ConversationPage() {
 
     fetchDevices()
   }, [searchQuery, selectedBrand, selectedCategory, currentPage])
+
+  
 
   // Fetch all brands and device types on mount
   useEffect(() => {

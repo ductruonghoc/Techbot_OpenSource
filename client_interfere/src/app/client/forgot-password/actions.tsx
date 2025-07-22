@@ -18,8 +18,6 @@ export async function submitEmail(formData: FormData) {
     // 2. Check if the email exists in your database
     // 3. Generate and send an OTP code
 
-    console.log(`Reset password requested for email: ${email}`)
-
     // Return success response
     return {
       success: true,
@@ -52,7 +50,6 @@ export async function verifyOTP(formData: FormData) {
     // 2. Check if the OTP matches what was sent
     // 3. Check if the OTP is still valid (not expired)
 
-    console.log(`Verifying OTP: ${otp}`)
 
     // Return success response
     return {

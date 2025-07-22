@@ -44,7 +44,7 @@ export default function HomeLayout({
 
   const handleSignOut = () => {
     localStorage.removeItem("dmc_api_gateway_token");
-    router.push("/client/log-in");
+    router.push("/admin/log-in");
   };
 
 

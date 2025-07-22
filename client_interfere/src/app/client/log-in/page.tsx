@@ -46,7 +46,7 @@ export default function LogInPage() {
   return (
     <div className="min-h-screen flex flex-col">
       <header className="container mx-auto p-4 flex justify-between items-center">
-        <div className="text-2xl font-bold">DMC</div>
+        <div className="text-2xl font-bold">TechBot</div>
         <Link href="/client/sign-up" className="text-[#2e3470] font-medium hover:underline">
           Sign up
         </Link>

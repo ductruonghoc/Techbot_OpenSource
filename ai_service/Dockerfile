@@ -28,10 +28,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 # is run and the file is placed in a location accessible by your server.py.
 # Assuming 'weight.pt' is in the same directory as your Dockerfile:
 COPY weight.pt .
+
 # If 'weight.pt' is inside a subdirectory, e.g., 'models/weight.pt':
 # COPY models/weight.pt ./models/
 # And ensure your application expects it at './models/weight.pt'
-
+COPY gcs.json ./gcs.json
 # Copy your protobuf files and generated Python gRPC files
 COPY server.proto .
 COPY server_pb2.py .

@@ -79,7 +79,7 @@ export default function SignUpPage() {
     <div className="min-h-screen flex flex-col">
       <header className="flex items-center justify-between p-4 md:p-6">
         <Link href="/client" className="flex items-center gap-2">
-          <div className="text-[#2e3139] text-xl font-semibold">DMC</div>
+          <div className="text-[#2e3139] text-xl font-semibold">TechBot</div>
         </Link>
         <Link href="/client/log-in" className="text-[#4045ef] hover:text-[#2d336b] transition-colors">
           Log in

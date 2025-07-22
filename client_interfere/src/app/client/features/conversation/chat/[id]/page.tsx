@@ -340,20 +340,23 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
     toast.info("Share modal closed")
   }
 
-  const components = {
+    const components = {
     li: ({ node, ...props }: any) => (
-      <li style={{ overflowWrap: "anywhere", wordBreak: "break-word" }} {...props} />
+      <li style={{ overflowWrap: "normal", wordBreak: "normal" }} {...props} />
+    ),
+    p: ({ node, ...props }: any) => (
+      <p style={{ overflowWrap: "normal", wordBreak: "normal" }} {...props} />
     ),
     code: ({ node, inline, className, children, ...props }: any) => {
       if (inline) {
         return (
-          <code style={{ overflowWrap: "anywhere", wordBreak: "break-word" }} className={className} {...props}>
+          <code style={{ overflowWrap: "normal", wordBreak: "normal" }} className={className} {...props}>
             {children}
           </code>
         )
       }
       return (
-        <code style={{ whiteSpace: "pre-wrap", overflowWrap: "anywhere", wordBreak: "break-word" }} className={className} {...props}>
+        <code style={{ whiteSpace: "nowrap", overflowWrap: "normal", wordBreak: "normal" }} className={className} {...props}>
           <code>{children}</code>
         </code>
       )
@@ -415,7 +418,7 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
                       </div>
                       {message.sender === "ai" && (
                         <div className="flex mt-2 space-x-2">
-                          <Button
+                          {/* <Button
                             variant="ghost"
                             size="sm"
                             className="flex items-center gap-1 text-xs text-gray-500 hover:text-[#4045ef] transition-colors duration-200"
@@ -423,7 +426,7 @@ export default function ChatPage({ params }: { params: Promise<{ id: string }> }
                           >
                             <Save className="h-3.5 w-3.5" />
                             <span>Save as note</span>
-                          </Button>
+                          </Button> */}
                           <Button
                             variant="ghost"
                             size="sm"

@@ -117,6 +117,7 @@ export default function ImportPDFPage() {
         const result = await response.json()
         if (result.success) {
           sessionStorage.setItem("device_id", String(result.data.device_id))
+          sessionStorage.removeItem("pdf_id")
           setStep(2)
           toast.success("Device information saved. Please upload PDF file.")
         } else {

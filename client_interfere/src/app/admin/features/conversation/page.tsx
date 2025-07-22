@@ -40,6 +40,15 @@ export default function ConversationPage() {
   const [categorySearch, setCategorySearch] = useState("")
   const [brandSearch, setBrandSearch] = useState("")
 
+  // Check if any of the filters are not blank
+  useEffect(() => {
+    const hasFilters = (searchQuery && searchQuery !== "") ||
+      (selectedBrand && selectedBrand !== "*") ||
+      (selectedCategory && selectedCategory !== "*")
+    if (hasFilters) {
+      setCurrentPage(1) // Reset to page 1 if any filter changes
+    }
+  }, [searchQuery, selectedBrand, selectedCategory, setCurrentPage])
   // Fetch devices from API
   useEffect(() => {
     const fetchDevices = async () => {
@@ -190,9 +199,8 @@ export default function ConversationPage() {
           <div className="relative">
             <Button
               variant="outline"
-              className={`flex items-center gap-2 rounded-2xl border-slate-200 text-slate-700 hover:bg-blue-50 hover:border-blue-300 transition-all duration-200 shadow-sm font-medium px-6 py-3 ${
-                selectedCategory ? "bg-blue-50 border-blue-300 text-blue-700" : "bg-white"
-              }`}
+              className={`flex items-center gap-2 rounded-2xl border-slate-200 text-slate-700 hover:bg-blue-50 hover:border-blue-300 transition-all duration-200 shadow-sm font-medium px-6 py-3 ${selectedCategory ? "bg-blue-50 border-blue-300 text-blue-700" : "bg-white"
+                }`}
               onClick={toggleCategoryFilter}
             >
               Category
@@ -311,9 +319,8 @@ export default function ConversationPage() {
           <div className="relative">
             <Button
               variant="outline"
-              className={`flex items-center gap-2 rounded-2xl border-slate-200 text-slate-700 hover:bg-blue-50 hover:border-blue-300 transition-all duration-200 shadow-sm font-medium px-6 py-3 ${
-                selectedBrand ? "bg-blue-50 border-blue-300 text-blue-700" : "bg-white"
-              }`}
+              className={`flex items-center gap-2 rounded-2xl border-slate-200 text-slate-700 hover:bg-blue-50 hover:border-blue-300 transition-all duration-200 shadow-sm font-medium px-6 py-3 ${selectedBrand ? "bg-blue-50 border-blue-300 text-blue-700" : "bg-white"
+                }`}
               onClick={toggleBrandFilter}
             >
               Brand
@@ -515,9 +522,8 @@ export default function ConversationPage() {
                   devices.map((device, index) => (
                     <tr
                       key={device.device_id}
-                      className={`${
-                        index % 2 === 0 ? "bg-white" : "bg-slate-50"
-                      } border-b border-slate-100 hover:bg-blue-50 hover:shadow-sm cursor-pointer transition-all duration-200 group`}
+                      className={`${index % 2 === 0 ? "bg-white" : "bg-slate-50"
+                        } border-b border-slate-100 hover:bg-blue-50 hover:shadow-sm cursor-pointer transition-all duration-200 group`}
                       onClick={() => handleDeviceSelect(device)}
                     >
                       <td className="py-4 px-6 text-slate-800 font-medium group-hover:text-blue-700 transition-colors">

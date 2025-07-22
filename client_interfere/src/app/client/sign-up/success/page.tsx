@@ -7,7 +7,7 @@ export default function PasswordResetSuccessPage() {
     <div className="min-h-screen bg-white">
       <header className="flex items-center justify-between p-4 md:p-6">
         <Link href="/client" className="flex items-center gap-2">
-          <div className="text-[#2e3139] text-xl font-semibold">DMC</div>
+          <div className="text-[#2e3139] text-xl font-semibold">TechBot</div>
         </Link>
         <Link href="/client/log-in" className="text-[#4045ef] hover:text-[#2d336b] transition-colors">
           Log in
@@ -26,7 +26,7 @@ export default function PasswordResetSuccessPage() {
             <p className="text-[#425583] mb-8">Log in to your account with your new account</p>
           </div>
 
-          <Link href="/log-in">
+          <Link href="client/log-in">
             <Button className="w-full bg-[#2D336B] hover:bg-[#2d336b]/90 text-white rounded-full py-6">
               Log in
             </Button>

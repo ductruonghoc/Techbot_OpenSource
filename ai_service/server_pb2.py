@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0cserver.proto\"0\n\x11\x45xtractPdfRequest\x12\x1b\n\x13gcs_pdf_bucket_name\x18\x01 \x01(\t\")\n\x12\x45xtractPdfResponse\x12\x13\n\x0bresult_json\x18\x01 \x01(\t\"$\n\x14MbertChunkingRequest\x12\x0c\n\x04text\x18\x01 \x01(\t\",\n\x15MbertChunkingResponse\x12\x13\n\x0bresult_json\x18\x01 \x01(\t\"\x1b\n\nRagRequest\x12\r\n\x05query\x18\x01 \x01(\t\"3\n\x0bRagResponse\x12\x10\n\x08response\x18\x01 \x01(\t\x12\x12\n\nimages_ids\x18\x02 \x03(\x05\":\n\x16RagWithDeviceIDRequest\x12\r\n\x05query\x18\x01 \x01(\t\x12\x11\n\tdevice_id\x18\x02 \x01(\x05\"!\n\x10SummarizeRequest\x12\r\n\x05query\x18\x01 \x01(\t\"$\n\x11SummarizeResponse\x12\x0f\n\x07summary\x18\x01 \x01(\t2G\n\x11\x45xtractPdfService\x12\x32\n\x07\x45xtract\x12\x12.ExtractPdfRequest\x1a\x13.ExtractPdfResponse2V\n\x14MbertChunkingService\x12>\n\rChunkAndEmbed\x12\x15.MbertChunkingRequest\x1a\x16.MbertChunkingResponse20\n\nRagService\x12\"\n\x05Query\x12\x0b.RagRequest\x1a\x0c.RagResponse2H\n\x16RagServiceWithDeviceID\x12.\n\x05Query\x12\x17.RagWithDeviceIDRequest\x1a\x0c.RagResponse2K\n\x15SummarizeQueryService\x12\x32\n\tSummarize\x12\x11.SummarizeRequest\x1a\x12.SummarizeResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0cserver.proto\"0\n\x11\x45xtractPdfRequest\x12\x1b\n\x13gcs_pdf_bucket_name\x18\x01 \x01(\t\")\n\x12\x45xtractPdfResponse\x12\x13\n\x0bresult_json\x18\x01 \x01(\t\"$\n\x14MbertChunkingRequest\x12\x0c\n\x04text\x18\x01 \x01(\t\",\n\x15MbertChunkingResponse\x12\x13\n\x0bresult_json\x18\x01 \x01(\t\"\x1b\n\nRagRequest\x12\r\n\x05query\x18\x01 \x01(\t\"3\n\x0bRagResponse\x12\x10\n\x08response\x18\x01 \x01(\t\x12\x12\n\nimages_ids\x18\x02 \x03(\x05\":\n\x16RagWithDeviceIDRequest\x12\r\n\x05query\x18\x01 \x01(\t\x12\x11\n\tdevice_id\x18\x02 \x01(\x05\"^\n!RagWithConversationHistoryRequest\x12\r\n\x05query\x18\x01 \x01(\t\x12\x17\n\x0f\x63onversation_id\x18\x02 \x01(\t\x12\x11\n\tdevice_id\x18\x03 \x01(\x05\"!\n\x10SummarizeRequest\x12\r\n\x05query\x18\x01 \x01(\t\"$\n\x11SummarizeResponse\x12\x0f\n\x07summary\x18\x01 \x01(\t2G\n\x11\x45xtractPdfService\x12\x32\n\x07\x45xtract\x12\x12.ExtractPdfRequest\x1a\x13.ExtractPdfResponse2V\n\x14MbertChunkingService\x12>\n\rChunkAndEmbed\x12\x15.MbertChunkingRequest\x1a\x16.MbertChunkingResponse20\n\nRagService\x12\"\n\x05Query\x12\x0b.RagRequest\x1a\x0c.RagResponse2H\n\x16RagServiceWithDeviceID\x12.\n\x05Query\x12\x17.RagWithDeviceIDRequest\x1a\x0c.RagResponse2^\n!RagServiceWithConversationHistory\x12\x39\n\x05Query\x12\".RagWithConversationHistoryRequest\x1a\x0c.RagResponse2K\n\x15SummarizeQueryService\x12\x32\n\tSummarize\x12\x11.SummarizeRequest\x1a\x12.SummarizeResponseb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -45,18 +45,22 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_RAGRESPONSE']._serialized_end=273
   _globals['_RAGWITHDEVICEIDREQUEST']._serialized_start=275
   _globals['_RAGWITHDEVICEIDREQUEST']._serialized_end=333
-  _globals['_SUMMARIZEREQUEST']._serialized_start=335
-  _globals['_SUMMARIZEREQUEST']._serialized_end=368
-  _globals['_SUMMARIZERESPONSE']._serialized_start=370
-  _globals['_SUMMARIZERESPONSE']._serialized_end=406
-  _globals['_EXTRACTPDFSERVICE']._serialized_start=408
-  _globals['_EXTRACTPDFSERVICE']._serialized_end=479
-  _globals['_MBERTCHUNKINGSERVICE']._serialized_start=481
-  _globals['_MBERTCHUNKINGSERVICE']._serialized_end=567
-  _globals['_RAGSERVICE']._serialized_start=569
-  _globals['_RAGSERVICE']._serialized_end=617
-  _globals['_RAGSERVICEWITHDEVICEID']._serialized_start=619
-  _globals['_RAGSERVICEWITHDEVICEID']._serialized_end=691
-  _globals['_SUMMARIZEQUERYSERVICE']._serialized_start=693
-  _globals['_SUMMARIZEQUERYSERVICE']._serialized_end=768
+  _globals['_RAGWITHCONVERSATIONHISTORYREQUEST']._serialized_start=335
+  _globals['_RAGWITHCONVERSATIONHISTORYREQUEST']._serialized_end=429
+  _globals['_SUMMARIZEREQUEST']._serialized_start=431
+  _globals['_SUMMARIZEREQUEST']._serialized_end=464
+  _globals['_SUMMARIZERESPONSE']._serialized_start=466
+  _globals['_SUMMARIZERESPONSE']._serialized_end=502
+  _globals['_EXTRACTPDFSERVICE']._serialized_start=504
+  _globals['_EXTRACTPDFSERVICE']._serialized_end=575
+  _globals['_MBERTCHUNKINGSERVICE']._serialized_start=577
+  _globals['_MBERTCHUNKINGSERVICE']._serialized_end=663
+  _globals['_RAGSERVICE']._serialized_start=665
+  _globals['_RAGSERVICE']._serialized_end=713
+  _globals['_RAGSERVICEWITHDEVICEID']._serialized_start=715
+  _globals['_RAGSERVICEWITHDEVICEID']._serialized_end=787
+  _globals['_RAGSERVICEWITHCONVERSATIONHISTORY']._serialized_start=789
+  _globals['_RAGSERVICEWITHCONVERSATIONHISTORY']._serialized_end=883
+  _globals['_SUMMARIZEQUERYSERVICE']._serialized_start=885
+  _globals['_SUMMARIZEQUERYSERVICE']._serialized_end=960
 # @@protoc_insertion_point(module_scope)

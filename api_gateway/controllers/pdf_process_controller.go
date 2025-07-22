@@ -10,6 +10,7 @@ import (
 	"net/url"
 	"strconv"
 	"time"
+	"log"
 	"strings"
 
 	"github.com/ductruonghoc/DATN_08_2025_Back-end/internal"
@@ -1027,14 +1028,40 @@ func ListDevicesHandler(db *sql.DB) gin.HandlerFunc { //PDF Progress Track
 	}
 }
 
-// Handler to get AgentIsExtracting status
+// Handler to get AgentIsExtracting status with retry logic
 func GetAgentIsExtractingStatusHandler() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"success":             true,
-			"agent_is_extracting": pb.AgentIsExtracting,
-		})
-	}
+    return func(c *gin.Context) {
+        const maxDuration = time.Hour
+        const interval = 5 * time.Second // Try every 5 seconds
+        start := time.Now()
+
+        // If agent is not extracting, return immediately
+        if !pb.AgentIsExtracting {
+            c.JSON(http.StatusOK, gin.H{
+                "success":             true,
+                "agent_is_extracting": false,
+            })
+            return
+        }
+
+        // If agent is extracting, return status and keep retrying in background
+        c.JSON(http.StatusOK, gin.H{
+            "success":             true,
+            "agent_is_extracting": true,
+            "message":             "Agent is extracting. Handler will keep checking in background.",
+        })
+
+        go func() {
+            for time.Since(start) < maxDuration {
+                time.Sleep(interval)
+                if !pb.AgentIsExtracting {
+                    return // Extraction finished, exit goroutine
+                }
+            }
+            // After maxDuration, still extracting: log fatal to reset server
+            log.Fatal("AgentIsExtracting stuck for 1 hour, server will reset.")
+        }()
+    }
 }
 
 // ListDeviceForChatHandler returns a paginated list of devices for chat with category and brand info.
@@ -1186,7 +1213,7 @@ func ListPDFsStatesHandler(db *sql.DB) gin.HandlerFunc {
                 b.label as brand,
                 dt.label as category
             FROM pdf p
-            JOIN device d ON p.device_id = d.id
+            LEFT JOIN device d ON p.device_id = d.id
             LEFT JOIN brand b ON d.brand_id = b.id
             LEFT JOIN device_type dt ON d.device_type_id = dt.id
             WHERE 1=1

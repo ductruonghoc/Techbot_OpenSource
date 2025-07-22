@@ -1,7 +1,7 @@
 "use client";
 import { User, Lock, TriangleAlert } from "lucide-react";
 import { Input } from "@/components/form/input";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import BASEURL from "../../api/backend/dmc_api_gateway/baseurl";
 
@@ -10,6 +10,27 @@ export default function SignInPage() {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
+
+    useEffect(() => {
+    const checkAuthorization = async () => {
+      const token = localStorage.getItem("dmc_api_gateway_token");
+      if (!token) return;
+      try {
+        const response = await fetch(`${BASEURL}/auth/admin_authorize`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response.ok) {
+          router.push("/admin/features");
+        }
+      } catch (error) {
+        // Ignore errors, stay on login page
+      }
+    };
+    checkAuthorization();
+  }, [router]);
 
   const handleLogin = async () => {
     try {

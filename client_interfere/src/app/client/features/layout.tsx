@@ -251,7 +251,7 @@ export default function HomeLayout({
           </div>
 
           <nav className={cn("mt-6", sidebarOpen ? "px-2" : "flex flex-col items-center")}>
-            <Link
+            {/* <Link
               href="/client/features/import"
               className={cn(
                 "flex items-center gap-3 rounded-md hover:bg-white/20 transition-all duration-200 hover:scale-105 active:scale-95 relative",
@@ -263,8 +263,8 @@ export default function HomeLayout({
             >
               <Upload className="h-5 w-5 text-[#2d336b]" />
               {sidebarOpen && <span>Upload PDF</span>}
-            </Link>
-            <Link
+            </Link> */}
+            {/* <Link
               href="/client/features/track-progress/tracking"
               className={cn(
                 "flex items-center gap-3 rounded-md hover:bg-white/20 transition-all duration-200 hover:scale-105 active:scale-95 relative",
@@ -276,7 +276,7 @@ export default function HomeLayout({
             >
               <FileText className="h-5 w-5 text-[#2d336b]" />
               {sidebarOpen && <span>Track Progress</span>}
-            </Link>
+            </Link> */}
           </nav>
 
           {sidebarOpen && (
@@ -335,7 +335,7 @@ export default function HomeLayout({
               onClick={toggleUserMenu}
               className="flex items-center gap-2 text-[#2d336b] hover:text-[#4045ef] transition-all duration-200 hover:scale-105 active:scale-95"
             >
-              <span>client</span>
+              <span>Client</span>
               <ChevronDown className="h-4 w-4" />
             </button>
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 transition-all duration-200 hover:scale-110 active:scale-95">

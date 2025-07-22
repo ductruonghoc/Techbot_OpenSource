@@ -40,6 +40,18 @@ export default function TrackProgressPage() {
   const [allBrands, setAllBrands] = useState<string[]>([])
   const [allCategories, setAllCategories] = useState<string[]>([])
 
+  // Check if any of the filters are not blank
+  useEffect(() => {
+    const hasFilters = (searchQuery && searchQuery !== "") ||
+      (brandFilter && brandFilter !== "*") ||
+      (categoryFilter && categoryFilter !== "*") ||
+      statusFilter !== "all";
+    if (hasFilters) {
+      setPage(1) // Reset to page 1 if any filter changes
+
+    }
+  }, [searchQuery, brandFilter, categoryFilter, statusFilter, setPage])
+
   useEffect(() => {
     const fetchPDFs = async () => {
       setLoading(true)
@@ -148,8 +160,8 @@ export default function TrackProgressPage() {
 
   return (
     <div className="flex min-h-screen font-sans antialiased" onClick={handleCloseSidebar}>
-      <div 
-        className={`flex-1 p-4 transition-all duration-300 ${selectedFile ? "mr-80" : ""}`} 
+      <div
+        className={`flex-1 p-4 transition-all duration-300 ${selectedFile ? "mr-80" : ""}`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="max-w-6xl mx-auto">
@@ -228,8 +240,8 @@ export default function TrackProgressPage() {
                         file.progress.status === "not-full-embeded"
                           ? "bg-amber-500"
                           : file.progress.status === "need-ocr"
-                          ? "bg-blue-500"
-                          : "bg-green-500"
+                            ? "bg-blue-500"
+                            : "bg-green-500"
                       const percent = Math.round((file.progress.current / file.progress.total) * 100)
 
                       return (
@@ -293,7 +305,7 @@ export default function TrackProgressPage() {
       </div>
 
       {selectedFile && (
-        <div 
+        <div
           className="fixed right-0 top-0 bottom-0 w-80 bg-white border-l border-gray-100 shadow-lg z-50 overflow-y-auto"
           onClick={(e) => e.stopPropagation()}
         >

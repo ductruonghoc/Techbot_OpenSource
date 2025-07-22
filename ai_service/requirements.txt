@@ -10,4 +10,3 @@ ultralytics
 PyMuPDF
 Pillow
 torch==2.7.0 # Hoặc phiên bản cụ thể 
-dotenv

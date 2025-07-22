@@ -14,7 +14,7 @@ import server_pb2_grpc
 from app.gcs import gcs_utils
 from app.pdf_process import pdf_extractor
 from app.embedding import embedding_utils
-from app.rag import rag_utils, rag_generator
+from app.rag import rag_utils, rag_generator, conversation_history
 import app.config as config
 
 
@@ -70,13 +70,13 @@ class RagServiceServicer(server_pb2_grpc.RagServiceServicer):
         query_list = rag_generator.generate_query_rephrasings(query)
         
         # Retrieve relevant text chunks from DB
-        retrieved_chunks = rag_utils.retrieve_with_rephrasings(query_list, config.db_connection_params, top_k=10, min_threshold=-1, step=0.1)
+        retrieved_chunks = rag_utils.retrieve_text_with_rephrasings(query_list, db_config=config.db_connection_params, top_k=10, min_threshold=0.5, step=0.1)
 
         # Generate response with LLM
         response_text = rag_generator.generate_response(query, retrieved_chunks)
         
         # Retrieve relevant image IDs from DB
-        images_ids = rag_utils.retrieve_images_with_rephrasings(query_list, config.db_connection_params, top_k=10, min_threshold=0.5, step=0.05, start_threshold=1)
+        images_ids = rag_utils.retrieve_images_with_rephrasings(query_list, db_config=config.db_connection_params, top_k=10, min_threshold=0.5, step=0.05, start_threshold=1)
         return server_pb2.RagResponse(
             response=response_text,
             images_ids=images_ids
@@ -87,22 +87,65 @@ class RagServiceWithDeviceIDServicer(server_pb2_grpc.RagServiceWithDeviceIDServi
     def Query(self, request, _):
         query = request.query
         device_id = request.device_id
-        new_query = f"[Info: {rag_utils.get_device_info_from_device_id(device_id, db_params=config.db_connection_params)}] {query}"
+        new_query = f"[Info: {rag_utils.get_device_info_from_device_id(device_id=device_id, db_params=config.db_connection_params)}] {query}"
         query_list = rag_generator.generate_query_rephrasings(new_query)
 
         # Retrieve relevant text chunks from DB using Device ID logic
-        retrieved_chunks = rag_utils.retrieve_with_rephrasings_with_device_id(query_list, device_id, config.db_connection_params, top_k=10, min_threshold=-1, step=0.1)
+        retrieved_chunks = rag_utils.retrieve_text_with_rephrasings(query_list, device_id=device_id, db_config=config.db_connection_params, top_k=10, min_threshold=0.5, step=0.1)
 
         # Generate response with LLM
         response_text = rag_generator.generate_response(new_query, retrieved_chunks)
 
         # Retrieve relevant image IDs from DB using Device ID logic
-        images_ids = rag_utils.retrieve_images_with_rephrasings_with_device_id(query_list, device_id, config.db_connection_params, top_k=10, min_threshold=0.5, step=0.05, start_threshold=1)
+        images_ids = rag_utils.retrieve_images_with_rephrasings(query_list, device_id=device_id, db_config=config.db_connection_params, top_k=10, min_threshold=0.5, step=0.05, start_threshold=1)
         return server_pb2.RagResponse(
             response=response_text,
             images_ids=images_ids
         )
     
+
+class RagServiceWithConversationHistoryServicer(server_pb2_grpc.RagServiceWithConversationHistoryServicer):
+    def Query(self, request, _):
+        query = request.query
+        conversation_id = request.conversation_id
+        device_id = request.device_id
+
+        # Retrieve conversation history
+        expanded_query = conversation_history.expand_query_with_history(
+            original_query=query,
+            conversation_id=conversation_id,
+            db_config=config.db_connection_params,
+        )
+
+        # Retrieve relevant text chunks from DB using Device ID logic
+        retrieved_chunks = rag_utils.retrieve_text_with_fallback_threshold(
+            expanded_query, 
+            device_id=device_id, 
+            db_config=config.db_connection_params, 
+            top_k=10, min_threshold=0.3, 
+            step=0.1, 
+            start_threshold=0.7
+        )
+
+        # Generate response with LLM using conversation history
+        response_text = rag_generator.generate_response(expanded_query, retrieved_chunks)
+
+        # Retrieve relevant image IDs from DB using conversation history
+        images_ids = rag_utils.retrieve_images_with_fallback_threshold(
+            query=expanded_query,
+            db_config=config.db_connection_params,
+            top_k=10,
+            min_threshold=0.3,
+            step=0.05,
+            start_threshold=0.7,
+            device_id=device_id
+        )
+
+        return server_pb2.RagResponse(
+            response=response_text,
+            images_ids=images_ids
+        )
+
 
 class SummarizeQueryServicer(server_pb2_grpc.SummarizeQueryServiceServicer):
     def Summarize(self, request, _):
@@ -112,7 +155,7 @@ class SummarizeQueryServicer(server_pb2_grpc.SummarizeQueryServiceServicer):
         summary_text = rag_generator.generate_summary(query)
 
         return server_pb2.SummarizeResponse(summary=summary_text)
-
+    
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=4))
@@ -121,6 +164,7 @@ def serve():
     server_pb2_grpc.add_RagServiceServicer_to_server(RagServiceServicer(), server)
     server_pb2_grpc.add_RagServiceWithDeviceIDServicer_to_server(RagServiceWithDeviceIDServicer(), server)
     server_pb2_grpc.add_SummarizeQueryServiceServicer_to_server(SummarizeQueryServicer(), server)
+    server_pb2_grpc.add_RagServiceWithConversationHistoryServicer_to_server(RagServiceWithConversationHistoryServicer(), server)
     server.add_insecure_port(f'[::]:{config.PORT}')  # Use PORT from environment variable
     print(f"gRPC server running on port {config.PORT}...")
     server.start()

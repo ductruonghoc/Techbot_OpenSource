@@ -12,6 +12,8 @@ services:
       - .env
     networks:
       - techbot_network
+    volumes:
+      - ./gcs.json:/app/gcs.json # Mount gcs.json into the container
     # Thêm healthcheck cơ bản nếu API Gateway có endpoint sức khỏe
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/health"] # Thay /health bằng endpoint thực tế
@@ -29,6 +31,8 @@ services:
       - .env
     networks:
       - techbot_network
+    volumes:
+      - ./gcs.json:/app/gcs.json # Mount gcs.json into the container
     # Healthcheck cho gRPC khó hơn với curl, thường cần grpcurl hoặc script.
     # Để đơn giản, có thể bỏ qua hoặc thêm CMD_SHELL kiểm tra cổng
     healthcheck:

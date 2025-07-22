@@ -1,9 +1,9 @@
 import os
 # Test only
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
-# Load environment variables from .env file
-load_dotenv()
+# # Load environment variables from .env file
+# load_dotenv()
 
 # Configuration for Google Cloud Storage (GCS)
 gcs_pdf_bucket_name = os.getenv("GCS_PDF_BUCKET_NAME")
@@ -22,7 +22,7 @@ APIKEYQUERY = os.getenv("GEMINI_API_KEY_QUERY")
 APIKEYEXTRACT = os.getenv("GEMINI_API_KEY_EXTRACT")
 
 # Port configuration
-PORT = os.getenv("AI_PORT", "8080")  # Default to 8080 if not set
+PORT = os.getenv("PORT", "8080")  # Default to 8080 if not set
 
 # Path to Google Cloud service account key
 service_account_key_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS", "gcs.json")
