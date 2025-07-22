@@ -7,8 +7,6 @@ WORKDIR /app
 # Copy go.mod and go.sum files
 COPY go.mod go.sum ./
 
-COPY gcs.json ./gcs.json
-
 # Download the dependencies
 RUN go mod download
 
