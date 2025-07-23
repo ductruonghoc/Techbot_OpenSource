@@ -5,6 +5,8 @@ import (
 	"database/sql"
 
 	"github.com/ductruonghoc/DATN_08_2025_Back-end/controllers"
+	"github.com/ductruonghoc/DATN_08_2025_Back-end/middlewares"
+	"github.com/ductruonghoc/DATN_08_2025_Back-end/models"
 	"github.com/gin-gonic/gin"
 )
 
@@ -27,5 +29,8 @@ func PDFProcessRoutes(r *gin.Engine, db *sql.DB) {
 		routeGroup.GET("/devices_for_chat", controllers.ListDeviceForChatHandler(db))
 		routeGroup.GET("/list_pdfs_states", controllers.ListPDFsStatesHandler(db))
 		routeGroup.GET("/pdf_pages_embedding_status", controllers.PDFPagesEmbeddedStatusesHandler(db))
+		routeGroup.POST("/add_brand", middlewares.Authorization([]string{models.AdminPermission}), controllers.AddBrandHandler(db))
+		routeGroup.POST("/add_category", middlewares.Authorization([]string{models.AdminPermission}), controllers.AddCategoryHandler(db))
+	
 	}
 }

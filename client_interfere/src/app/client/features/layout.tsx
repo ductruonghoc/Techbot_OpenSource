@@ -7,9 +7,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import {
   Menu,
-  Upload,
   Plus,
-  FileText,
   ChevronDown,
   LogOut,
   Trash2,
@@ -19,6 +17,8 @@ import { usePathname } from "next/navigation"
 import BASEURL from "../../api/backend/dmc_api_gateway/baseurl"
 import Loader from "@/components/loader/loader"
 import { useConversations } from "@/context/conversation"
+import { toast, ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 export default function HomeLayout({
   children,
@@ -31,6 +31,7 @@ export default function HomeLayout({
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [conversationToDelete, setConversationToDelete] = useState<string | null>(null)
   const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null)
+  const [displayName, setDisplayName] = useState<string>("User")
   const { conversations, setConversations } = useConversations()
 
   const pathname = usePathname()
@@ -54,27 +55,41 @@ export default function HomeLayout({
     setActiveConversationMenu(null)
   }
 
-  const confirmDeleteConversation = () => {
+  const confirmDeleteConversation = async () => {
     if (conversationToDelete) {
-      setConversations(conversations.filter((conv: any) => conv.id !== conversationToDelete))
-      setShowDeleteModal(false)
-      setConversationToDelete(null)
-      if (pathname.includes(`/client/features/conversation/chat/${conversationToDelete}`)) {
-        router.push("/client/features/conversation")
+      const token = localStorage.getItem("dmc_api_gateway_token")
+      try {
+        const res = await fetch(`${BASEURL}/conversation/delete`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ conversation_id: conversationToDelete }),
+        })
+        if (res.ok) {
+          setConversations(conversations.filter((conv: any) => conv.id !== conversationToDelete))
+          setShowDeleteModal(false)
+          setConversationToDelete(null)
+          toast.success("Conversation deleted successfully")
+          if (pathname.includes(`/client/features/conversation/chat/${conversationToDelete}`)) {
+            router.push("/client/features/conversation")
+          }
+        } else {
+          toast.error("Failed to delete conversation")
+        }
+      } catch (error) {
+        toast.error("An error occurred while deleting")
       }
     }
   }
+
 
   const cancelDeleteConversation = () => {
     setShowDeleteModal(false)
     setConversationToDelete(null)
   }
 
-  const toggleConversationMenu = (conversationId: string, e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setActiveConversationMenu(activeConversationMenu === conversationId ? null : conversationId)
-  }
 
   const handleMenuClick = () => {
     setSidebarOpen(true)
@@ -98,6 +113,21 @@ export default function HomeLayout({
 
         if (response.ok) {
           setIsAuthorized(true)
+          // Fetch display name after successful auth
+          try {
+            const nameRes = await fetch(`${BASEURL}/auth/display_name`, {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            })
+            const nameJson = await nameRes.json()
+            if (nameRes.ok && nameJson.success && nameJson.data?.display_name) {
+              setDisplayName(nameJson.data.display_name)
+            }
+          } catch (err) {
+            toast.error("Failed to fetch display name")
+          }
         } else {
           setIsAuthorized(false)
         }
@@ -199,6 +229,7 @@ export default function HomeLayout({
 
   return (
     <div className="flex h-screen overflow-hidden bg-gray-50">
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} closeOnClick pauseOnHover theme="light" />
       <div
         className={cn(
           "fixed inset-y-0 left-0 z-50 flex flex-col bg-[#fff2f2] shadow-md transition-all duration-300 ease-in-out",
@@ -335,7 +366,7 @@ export default function HomeLayout({
               onClick={toggleUserMenu}
               className="flex items-center gap-2 text-[#2d336b] hover:text-[#4045ef] transition-all duration-200 hover:scale-105 active:scale-95"
             >
-              <span>Client</span>
+              <span>{displayName}</span>
               <ChevronDown className="h-4 w-4" />
             </button>
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-200 transition-all duration-200 hover:scale-110 active:scale-95">

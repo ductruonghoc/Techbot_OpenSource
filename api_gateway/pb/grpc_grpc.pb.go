@@ -363,6 +363,93 @@ var RagServiceWithDeviceID_ServiceDesc = grpc.ServiceDesc{
 	Metadata: "grpc.proto",
 }
 
+// RagServiceWithConversationHistoryClient is the client API for RagServiceWithConversationHistory service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type RagServiceWithConversationHistoryClient interface {
+	Query(ctx context.Context, in *RagWithConversationHistoryRequest, opts ...grpc.CallOption) (*RagResponse, error)
+}
+
+type ragServiceWithConversationHistoryClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewRagServiceWithConversationHistoryClient(cc grpc.ClientConnInterface) RagServiceWithConversationHistoryClient {
+	return &ragServiceWithConversationHistoryClient{cc}
+}
+
+func (c *ragServiceWithConversationHistoryClient) Query(ctx context.Context, in *RagWithConversationHistoryRequest, opts ...grpc.CallOption) (*RagResponse, error) {
+	out := new(RagResponse)
+	err := c.cc.Invoke(ctx, "/RagServiceWithConversationHistory/Query", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// RagServiceWithConversationHistoryServer is the server API for RagServiceWithConversationHistory service.
+// All implementations must embed UnimplementedRagServiceWithConversationHistoryServer
+// for forward compatibility
+type RagServiceWithConversationHistoryServer interface {
+	Query(context.Context, *RagWithConversationHistoryRequest) (*RagResponse, error)
+	mustEmbedUnimplementedRagServiceWithConversationHistoryServer()
+}
+
+// UnimplementedRagServiceWithConversationHistoryServer must be embedded to have forward compatible implementations.
+type UnimplementedRagServiceWithConversationHistoryServer struct {
+}
+
+func (UnimplementedRagServiceWithConversationHistoryServer) Query(context.Context, *RagWithConversationHistoryRequest) (*RagResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Query not implemented")
+}
+func (UnimplementedRagServiceWithConversationHistoryServer) mustEmbedUnimplementedRagServiceWithConversationHistoryServer() {
+}
+
+// UnsafeRagServiceWithConversationHistoryServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to RagServiceWithConversationHistoryServer will
+// result in compilation errors.
+type UnsafeRagServiceWithConversationHistoryServer interface {
+	mustEmbedUnimplementedRagServiceWithConversationHistoryServer()
+}
+
+func RegisterRagServiceWithConversationHistoryServer(s grpc.ServiceRegistrar, srv RagServiceWithConversationHistoryServer) {
+	s.RegisterService(&RagServiceWithConversationHistory_ServiceDesc, srv)
+}
+
+func _RagServiceWithConversationHistory_Query_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RagWithConversationHistoryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(RagServiceWithConversationHistoryServer).Query(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/RagServiceWithConversationHistory/Query",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(RagServiceWithConversationHistoryServer).Query(ctx, req.(*RagWithConversationHistoryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// RagServiceWithConversationHistory_ServiceDesc is the grpc.ServiceDesc for RagServiceWithConversationHistory service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var RagServiceWithConversationHistory_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "RagServiceWithConversationHistory",
+	HandlerType: (*RagServiceWithConversationHistoryServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Query",
+			Handler:    _RagServiceWithConversationHistory_Query_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "grpc.proto",
+}
+
 // SummarizeQueryServiceClient is the client API for SummarizeQueryService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.

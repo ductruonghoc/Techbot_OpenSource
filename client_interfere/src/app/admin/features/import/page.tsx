@@ -257,23 +257,71 @@ export default function ImportPDFPage() {
     }
   }
 
-  const handleAddBrand = () => {
-    if (newBrandName.trim()) {
-      toast.success(`Brand "${newBrandName}" added successfully`)
-      setShowAddBrandModal(false)
-      setNewBrandName("")
-    } else {
+  const handleAddBrand = async () => {
+    if (!newBrandName.trim()) {
       toast.error("Brand name cannot be empty")
+      return
+    }
+    const token = localStorage.getItem("dmc_api_gateway_token")
+    if (!token) {
+      toast.error("Missing admin token")
+      return
+    }
+    try {
+      const res = await fetch(`${BASEURL}/pdf_process/add_brand`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ brand_name: newBrandName }),
+      })
+      const json = await res.json()
+      if (res.ok && json.success) {
+        toast.success(json.message || "Brand added successfully")
+        setBrands([...brands, { id: json.data.brand_id, label: newBrandName }])
+        setDeviceBrand(json.data.brand_id) // Set for later action
+        setShowAddBrandModal(false)
+        setNewBrandName("")
+      } else {
+        toast.error(json.message || "Failed to add brand")
+      }
+    } catch (err: any) {
+      toast.error("Error adding brand: " + err.message)
     }
   }
 
-  const handleAddType = () => {
-    if (newTypeName.trim()) {
-      toast.success(`Device type "${newTypeName}" added successfully`)
-      setShowAddTypeModal(false)
-      setNewTypeName("")
-    } else {
+  const handleAddType = async () => {
+    if (!newTypeName.trim()) {
       toast.error("Device type cannot be empty")
+      return
+    }
+    const token = localStorage.getItem("dmc_api_gateway_token")
+    if (!token) {
+      toast.error("Missing admin token")
+      return
+    }
+    try {
+      const res = await fetch(`${BASEURL}/pdf_process/add_category`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ category_name: newTypeName }),
+      })
+      const json = await res.json()
+      if (res.ok && json.success) {
+        toast.success(json.message || "Device type added successfully")
+        setDeviceTypes([...deviceTypes, { id: json.data.category_id, label: newTypeName }])
+        setDeviceType(json.data.category_id) // Set for later action
+        setShowAddTypeModal(false)
+        setNewTypeName("")
+      } else {
+        toast.error(json.message || "Failed to add device type")
+      }
+    } catch (err: any) {
+      toast.error("Error adding device type: " + err.message)
     }
   }
 

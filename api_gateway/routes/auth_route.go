@@ -87,5 +87,10 @@ func UserRoutes(r *gin.Engine, db *sql.DB) {
 			middlewares.VeirifyOTP(db, 0),
 			controllers.VerifyOTPAndRespondHandler(),
 		)
+		routeGroup.GET(
+            "/display_name",
+            middlewares.Authorization([]string{"user", "admin"}),
+            controllers.GetAccountDisplayNameHandler(db),
+        )
 	}
 }

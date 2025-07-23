@@ -321,3 +321,44 @@ func VerifyOTPAndRespondHandler() gin.HandlerFunc {
         })
     }
 }
+
+// GetAccountDisplayNameHandler returns the display name of the authenticated account.
+func GetAccountDisplayNameHandler(db *sql.DB) gin.HandlerFunc {
+    return func(c *gin.Context) {
+        accountIDVal, exists := c.Get("account_id")
+        if !exists {
+            c.JSON(401, gin.H{
+                "success": false,
+                "message": "Unauthorized: account_id not found in context",
+            })
+            return
+        }
+        accountID, ok := accountIDVal.(int)
+        if !ok {
+            c.JSON(500, gin.H{
+                "success": false,
+                "message": "Internal error: invalid account_id type",
+            })
+            return
+        }
+
+        var displayName string
+        err := db.QueryRow(`SELECT display_name FROM account WHERE id = $1`, accountID).Scan(&displayName)
+        if err != nil {
+            c.JSON(404, gin.H{
+                "success": false,
+                "message": "Account not found or display name not set",
+                "error": err.Error(),
+            })
+            return
+        }
+
+        c.JSON(200, gin.H{
+            "success": true,
+            "message": "Fetched display name successfully",
+            "data": gin.H{
+                "display_name": displayName,
+            },
+        })
+    }
+}

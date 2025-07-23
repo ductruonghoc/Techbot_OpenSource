@@ -15,7 +15,7 @@ interface PDFFile {
   progress: {
     current: number
     total: number
-    status: "need-ocr" | "not-full-embeded" | "complete"
+    status: "need-ocr" | "not-fully-embedded" | "complete"
   }
   uploadAt: string
   device: {
@@ -62,8 +62,11 @@ export default function TrackProgressPage() {
         if (brandFilter) params.append("brand", brandFilter === "*" ? "" : brandFilter)
         if (categoryFilter) params.append("category", categoryFilter === "*" ? "" : categoryFilter)
         params.append("sort", "scoring")
-        if (statusFilter === "in-progress") {
+        if (statusFilter === "need-ocr") {
           params.append("min_scoring", "1")
+          params.append("max_scoring", "1")
+        } else if (statusFilter === "not-fully-embedded") {
+          params.append("min_scoring", "2")
           params.append("max_scoring", "2")
         } else if (statusFilter === "complete") {
           params.append("min_scoring", "3")
@@ -89,7 +92,7 @@ export default function TrackProgressPage() {
                 item.pdf_scoring === 1
                   ? "need-ocr"
                   : item.pdf_scoring === 2
-                    ? "not-full-embeded"
+                    ? "not-fully-embedded"
                     : item.pdf_scoring === 3
                       ? "complete"
                       : "need-ocr",
@@ -205,7 +208,8 @@ export default function TrackProgressPage() {
                 </SelectTrigger>
                 <SelectContent className="rounded-md bg-white shadow-lg">
                   <SelectItem value="all">All</SelectItem>
-                  <SelectItem value="in-progress">In Progress</SelectItem>
+                  <SelectItem value="need-ocr">Need OCR</SelectItem>
+                  <SelectItem value="not-fully-embedded">Not Fully Embedded</SelectItem>
                   <SelectItem value="complete">Complete</SelectItem>
                 </SelectContent>
               </Select>
@@ -237,7 +241,7 @@ export default function TrackProgressPage() {
                   ) : (
                     pdfFiles.map((file) => {
                       const barColor =
-                        file.progress.status === "not-full-embeded"
+                        file.progress.status === "not-fully-embedded"
                           ? "bg-amber-500"
                           : file.progress.status === "need-ocr"
                             ? "bg-blue-500"

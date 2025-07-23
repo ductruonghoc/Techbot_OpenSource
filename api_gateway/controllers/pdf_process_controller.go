@@ -1404,3 +1404,83 @@ func PDFPagesEmbeddedStatusesHandler(db *sql.DB) gin.HandlerFunc {
         })
     }
 }
+
+// AddBrandHandler handles adding a new brand and returns its ID.
+func AddBrandHandler(db *sql.DB) gin.HandlerFunc {
+    return func(c *gin.Context) {
+        var req struct {
+            BrandName string `json:"brand_name" binding:"required"`
+        }
+        if err := c.ShouldBindJSON(&req); err != nil {
+            c.JSON(400, gin.H{
+                "success": false,
+                "message": "Invalid request",
+                "error":   err.Error(),
+            })
+            return
+        }
+
+        // Insert new brand into the database
+        var brandID int
+        err := db.QueryRow(
+            `INSERT INTO brand (label) VALUES ($1) RETURNING id`,
+            req.BrandName,
+        ).Scan(&brandID)
+        if err != nil {
+            c.JSON(500, gin.H{
+                "success": false,
+                "message": "Failed to create brand",
+                "error":   err.Error(),
+            })
+            return
+        }
+
+        c.JSON(200, gin.H{
+            "success": true,
+            "message": "Brand created successfully",
+            "data": gin.H{
+                "brand_id": brandID,
+            },
+        })
+    }
+}
+
+// AddCategoryHandler handles adding a new device category and returns its ID.
+func AddCategoryHandler(db *sql.DB) gin.HandlerFunc {
+    return func(c *gin.Context) {
+        var req struct {
+            CategoryName string `json:"category_name" binding:"required"`
+        }
+        if err := c.ShouldBindJSON(&req); err != nil {
+            c.JSON(400, gin.H{
+                "success": false,
+                "message": "Invalid request",
+                "error":   err.Error(),
+            })
+            return
+        }
+
+        // Insert new category into the database
+        var categoryID int
+        err := db.QueryRow(
+            `INSERT INTO device_type (label) VALUES ($1) RETURNING id`,
+            req.CategoryName,
+        ).Scan(&categoryID)
+        if err != nil {
+            c.JSON(500, gin.H{
+                "success": false,
+                "message": "Failed to create category",
+                "error":   err.Error(),
+            })
+            return
+        }
+
+        c.JSON(200, gin.H{
+            "success": true,
+            "message": "Category created successfully",
+            "data": gin.H{
+                "category_id": categoryID,
+            },
+        })
+    }
+}

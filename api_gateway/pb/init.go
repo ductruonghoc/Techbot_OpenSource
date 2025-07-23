@@ -25,7 +25,7 @@ const (
 var localCredential = grpc.WithTransportCredentials(insecure.NewCredentials())
 var cloudCredential = grpc.WithTransportCredentials(credentials.NewClientTLSFromCert(nil, ""))
 
-var ip = LOCALIP // Change this to LOCALIP for local testing
+var ip = GGCLOUDIP // Change this to LOCALIP for local testing
 var currentCredential = func() grpc.DialOption {
     if ip == LOCALIP {
         return localCredential
@@ -238,4 +238,25 @@ func CallSummarizeQuery(query string) (string, error) {
         return "", err
     }
     return resp.GetSummary(), nil
+}
+
+// CallRagServiceWithConversationHistory calls the Query method of RagServiceWithConversationHistory and returns the response.
+func CallRagServiceWithConversationHistory(query string, conversationID string, deviceID int32) (*RagResponse, error) {
+    if pb_conn == nil {
+        log.Fatal("pb_conn is not initialized")
+    }
+    client := NewRagServiceWithConversationHistoryClient(pb_conn)
+    req := &RagWithConversationHistoryRequest{
+        Query:          query,
+        ConversationId: conversationID,
+        DeviceId:       deviceID,
+    }
+    ctx, cancel := context.WithTimeout(context.Background(), time.Hour)
+    defer cancel()
+
+    resp, err := client.Query(ctx, req)
+    if err != nil {
+        return nil, err
+    }
+    return resp, nil
 }
