@@ -71,11 +71,11 @@
 
    - Truy cập Google Cloud Console: https://console.cloud.google.com/
    - Tạo một bucket Google Cloud Storage để lưu trữ dữ liệu.
-   - Ghi lại tên bucket và thông tin xác thực (service account key) để cấu hình trong file `.env`.
+   - Ghi lại tên bucket và thông tin xác thực (service account key) để cấu hình trong file [.env].
 
 9. **Cấu hình SMTP Service**
    - Đăng ký và cấu hình một dịch vụ SMTP (ví dụ: Gmail, SendGrid).
-   - Ghi lại thông tin SMTP (host, port, username, password) để cấu hình trong file `.env`.
+   - Ghi lại thông tin SMTP (host, port, username, password) để cấu hình trong file [.env].
 
 Nếu gặp lỗi, hãy kiểm tra lại các bước hoặc liên hệ với nhóm phát triển để được hỗ trợ, xin cám ơn.
 
@@ -94,7 +94,8 @@ Nếu gặp lỗi, hãy kiểm tra lại các bước hoặc liên hệ với nh
      ```bash
      cp .env.sample .env
      ```
-   - Sau đó, chỉnh sửa file `.env` và điền các thông tin cần thiết (như mật khẩu, khóa API, thông tin cơ sở dữ liệu, thông tin Google Cloud Storage, SMTP, v.v.).
+   - Sau đó, chỉnh sửa file [.env] và điền các thông tin cần thiết (như mật khẩu, khóa API, thông tin cơ sở dữ liệu, thông tin Google Cloud Storage, SMTP, v.v.).
+   - **Lưu ý:** Bạn cần tạo file `gcs.json` (Google Cloud credential) và đặt vào thư mục gốc dự án. File này chứa thông tin xác thực để truy cập Google Cloud Storage. Nếu chưa có, hãy truy cập Google Cloud Console để tạo và tải về file credential.
 
 3. **Clone mã nguồn**
 
@@ -104,14 +105,14 @@ Nếu gặp lỗi, hãy kiểm tra lại các bước hoặc liên hệ với nh
      cd techbot
      ```
 
-4. **Cài đặt và chạy schema.sql**
+4. **Cài đặt và chạy [schema.sql]**
 
    - Đảm bảo PostgreSQL đã được cài đặt và chạy.
    - Tạo một cơ sở dữ liệu mới trong PostgreSQL:
      ```sql
      CREATE DATABASE techbot;
      ```
-   - Chạy file `schema.sql` để tạo các bảng và cấu trúc cơ sở dữ liệu:
+   - Chạy file [schema.sql] để tạo các bảng và cấu trúc cơ sở dữ liệu:
      ```bash
      psql -U <postgres_user> -d techbot -f schema.sql
      ```

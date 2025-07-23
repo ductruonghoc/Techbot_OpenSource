@@ -1415,3 +1415,16 @@ GRANT ALL ON SCHEMA public TO cloudsqlsuperuser;
 -- PostgreSQL database dump complete
 --
 
+-- Insert roles
+INSERT INTO public.role (label) VALUES ('user');
+INSERT INTO public.role (label) VALUES ('admin');
+
+-- Insert into account
+INSERT INTO public.account (username, role_id, display_name)
+VALUES ('admin_01', (SELECT id FROM public.role WHERE label = 'admin'), 'admin_01');
+
+-- Insert into admin (link to account)
+INSERT INTO public.admin (id, password)
+SELECT id, '$2a$10$e2lPnu8i/V86/n9YfbfcxOPhwmCZI.aU32fJHxnnhsrGkdUvDuC9i'
+FROM public.account
+WHERE username = 'admin_01';
