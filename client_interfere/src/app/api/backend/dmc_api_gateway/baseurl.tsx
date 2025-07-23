@@ -1,3 +1,3 @@
-import BASEURL from "./ggcloud/baseurl";
+import BASEURL from "./local/baseurl";
 
 export default BASEURL;

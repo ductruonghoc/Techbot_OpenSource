@@ -18,14 +18,14 @@ var pb_Client ExtractPdfServiceClient
 var pb_conn *grpc.ClientConn
 
 const (
-	LOCALIP   = "localhost:50051" // Default local IP for gRPC server
+	LOCALIP   = "localhost:8082" // Default local IP for gRPC server
 	GGCLOUDIP = "mdc-ai-agent-query-360694025581.asia-east1.run.app:443"
 )
 
 var localCredential = grpc.WithTransportCredentials(insecure.NewCredentials())
 var cloudCredential = grpc.WithTransportCredentials(credentials.NewClientTLSFromCert(nil, ""))
 
-var ip = GGCLOUDIP // Change this to LOCALIP for local testing
+var ip = LOCALIP // Change this to LOCALIP for local testing
 var currentCredential = func() grpc.DialOption {
     if ip == LOCALIP {
         return localCredential
